@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'SandboxPhoneGap' target in the 'SandboxPhoneGap' project
+//
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+#endif

@@ -1,0 +1,272 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Crossword Demo (2011060x)</title>
+
+<meta http-equiv="Pragma" content="no-cache">
+    
+<script type="text/javascript" src="Scripts/jquery-1.4.1.min.js"></script>
+
+<script type="text/javascript">
+
+    /*
+    crossword legend/source
+
+    11 x 6
+
+    #,#,G1,#,#,#,#,I2,#,#,#
+    #,M3,U,S,S,E,L,S,#,#,#
+    #,#,I,#,#,#,#,L,#,#,#
+    #,#,T,#,#,#,#,A,#,#,#
+    #,#,A4,S,T,R,O,N,O,M,Y
+    C5,A,R,#,#,#,#,D,#,#,#
+
+    */
+
+    var puzzleDataString = "#,#,G1,#,#,#,#,I2,#,#,#|#,M3,U,S,S,E,L,S,#,#,#|#,#,I,#,#,#,#,L,#,#,#|#,#,T,#,#,#,#,A,#,#,#|#,#,A4,S,T,R,O,N,O,M,Y|C5,A,R,#,#,#,#,D,#,#,#";
+    var puzzleRowData;
+
+    $(document).ready(function () {
+        // This is more like it!
+        report("");
+        setupCrossword();
+
+    });
+
+
+    function setupCrossword() {
+        // 1.) load puzzleData ... eventually do this via XML in background eventually and/or encrypt string in page to avoid anyone cheating
+        puzzleRowData = puzzleDataString.split("|");
+        report("Welcome! there are " + puzzleRowData.length + " rows in this puzzle!");
+
+        // 2.) check out data / confirm the columns match up
+        var columnCountsMatch = true;        
+        var puzzleColumnCount = puzzleRowData[0].split(",").length;
+        for (var r = 0; r < puzzleRowData.length; r++) {
+            nextPuzzleRow = puzzleRowData[r].split(",");
+            if (nextPuzzleRow.length != puzzleColumnCount) {
+                columnCountsMatch = false;
+                break;
+            }
+        }
+        report("Each row has " + puzzleColumnCount + " columns! (" + columnCountsMatch + ")");
+        if (!columnCountsMatch) {
+            alert("Crossword data has uneven rows/columns! Game can not continue.");
+            return;
+        }
+
+        // 3.) create the column/row div objects
+        renderCrosswordGrid(puzzleRowData.length, puzzleColumnCount);
+
+    }
+
+    /* ------------------------------------ */
+    function renderCrosswordGrid(rowCount, colCount) {
+        report('renderCrosswordGrid(rowCount:' + rowCount + ', colCount:' + colCount + ')...');
+
+        for (var c = 0; c < colCount; c++) { // report('c:' + c);            
+            var _columnRowDivs = "";
+            var _nextColumnDiv = '<div id="column_' + c + '" class="puzzle_column">';
+            var nextPuzzleRowData = puzzleRowData[c];
+
+                // fill each column with the vertical stack of cells/letter
+            for (var r = 0; r < rowCount; r++) { // report('r:' + r);
+                // setup loop vars
+                var _nextRowData = puzzleRowData[r].split(",");
+                var _cellLabel = "";
+                var _nextRowCharacter = "";
+                var _nextRowCharacters;
+                var _cellClassString = "puzzle_cell";
+                var _nextRowCharacterString = "";
+                // check if a cell number is in this cell or not
+                if (_nextRowData[c].split("").length > 1) {
+                    _nextRowCharacters = _nextRowData[c].split("");
+                    _cellLabel = _nextRowCharacters[1];
+                    _nextRowCharacter = _nextRowCharacters[0];
+                } else {
+                // otherwise just insert the cell letter
+                    _nextRowCharacter = _nextRowData[c];
+                }
+                _nextRowCharacterString = '<label>' + _cellLabel + '</label><a href="#"><span style="display:none;">' + _nextRowCharacter + '</span></a>';
+                // if an empty cell
+                if (_nextRowCharacter == "#") {
+                    _cellClassString = "puzzle_cell_empty";
+                    _nextRowCharacterString = ""; // clear out cell
+                }
+
+                _columnRowDivs += '<div id="column_' + c + '_cell_' + r + '" class="' + _cellClassString + '">' + _nextRowCharacterString + '</div>';                
+            }
+
+            $('#container').append(_nextColumnDiv + _columnRowDivs + '</div>');
+                
+        }
+
+
+        // set all cells to reveal on click (for now)
+        $('.puzzle_cell').bind('click', function () {
+            $('span', this).toggle(); // ('opacity', 1);
+        });
+            
+    }
+
+
+    /* ------------------------------------ */
+    function report(str) {
+        if (str == "") {
+            document.getElementById("console").value = " ";
+        } else {
+            document.getElementById("console").value += str + "\n";
+        }
+        
+    }
+
+</script>
+
+<style>
+div#log textarea{
+    font-size:12px;
+    color:#aaa;
+    font-family:Sans-Serif;
+}
+div#log{
+    position:absolute;
+    bottom:10px;    
+    margin:10px auto;
+}
+div#log, div#log textarea{
+    width:600px;
+    height:100px;
+}
+
+div.puzzle_column{
+    float:left;
+    width:50px;
+    height:auto;
+    border-right:1px solid #000;    
+}
+
+div.puzzle_cell input, div.puzzle_cell_empty input, 
+div.puzzle_cell_empty, div.puzzle_cell{
+    width:50px;
+    height:50px;    
+    font-size:27px;
+    text-align:center;
+    font-family:Sans-Serif;    
+    position:relative;
+}
+div.puzzle_cell input, div.puzzle_cell_empty input
+{
+    border-style:none;
+    text-align:center;
+    width:100%;
+    height:100%;
+    padding:4px;
+    float:left;
+}
+
+div.puzzle_cell_empty, div.puzzle_cell{    
+    border-top:1px solid #000;
+}
+
+
+div.puzzle_cell_empty a, div.puzzle_cell a{
+    width:50px;
+    height:50px;
+    background-color:#fff;
+    display:block;
+    text-decoration:none;
+    box-shadow:-2px 2px 4px rgba(0, 0, 0, 0.1) inset;
+    padding:0;
+    color:#888;
+}
+
+div.puzzle_cell_empty, div.puzzle_cell_empty a
+{
+    background-color:#000;
+    
+}
+
+div.puzzle_cell label{
+    position:absolute;
+    top:5px;
+    left:4px;
+    font-size:10px;
+    color:#000;
+    font-family:Sans-Serif;
+    z-index:20;
+}
+
+div.puzzle_cell a span{
+    padding:0;
+    padding-top:4px;
+    display:block;
+    color:#888;
+}
+div.puzzle_cell:first-child{    
+    border-top-style:none;
+}
+div.puzzle_column:first-child{    
+    border-left:1px solid #000;
+}
+div.puzzle_column:last-child{
+    border-right:1px solid #000;
+}
+
+div.puzzle_column div.puzzle_cell:last-child,
+div.puzzle_column div.puzzle_cell_empty:last-child
+{
+    border-bottom:1px solid #000;
+}
+div.puzzle_column div.puzzle_cell:first-child,
+div.puzzle_column div.puzzle_cell_empty:first-child
+{
+    border-top:1px solid #000;
+}
+div#container, div#hints{    
+    width:600px;
+    margin:20px auto;
+    margin-bottom:20px;   
+    font-family:Sans-Serif;
+    font-size:18px; 
+}
+
+div#hints div
+{
+    float:left;
+    margin-right:20px;    
+    width:260px;    
+}
+
+
+</style>
+
+</head>
+<body>
+
+<div id="container"></div>
+
+<div id="hints">
+
+<div id="hints_left">
+    DOWN:
+    <ol id="hints_down">
+    <li>6 Stringed Instrument</li>
+    <li>Gilligan's</li>
+    </ol>
+</div>
+<div id="hints_right">
+    ACROSS:
+    <ol>
+    <li value="3">Slimy kind of seafood</li>
+    <li value="4">The study of matter in outer space.</li>
+    <li value="5">Vehicle Type</li>
+    </ol>
+</div>
+</div>
+
+<div id="log">
+    <textarea id="console" style="display:none;width:800px;height:100px;" rows="10" cols="800"></textarea>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  
+    <!-- META TAGS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />      
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">            
+  
+    <!-- STYLES -->
+    <!-- link rel="stylesheet" href="_css/fixed.css" type= "text/css"  media="screen" / -->
+    <link rel="stylesheet" href="_css/main.css">
+      <!-- iPad/iPhone specific css below, add after your main css >
+      <link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="ipad.css" type="text/css" />		
+      <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="iphone.css" type="text/css" />		
+      -->    
+  
+    <!-- SCRIPTS -->
+    <!-- If you application is targeting iOS BEFORE 4.0 you MUST put json2.js from http://www.JSON.org/json2.js into your www directory and include it here -->
+    <script type="text/javascript" charset="utf-8" src="_js/jquery-1.6.1.min.js" ></script>  
+    <script type="text/javascript" charset="utf-8" src="phonegap-1.0.0.js"></script>
+    <script type="text/javascript" charset="utf-8" src="ChildBrowser.js"></script>
+    <script type="text/javascript" charset="utf-8" src="_js/global.js"></script>        
+    <script type="text/javascript" src="_js/audio.js"></script>	
+        
+    <script type="text/javascript" charset="utf-8" src="_js/main.js"></script>      
+  </head>
+  
+  <body onload="onBodyLoad()">
+  	             
+      <div class="view">          
+          <div id="nav" class="nav-wrapper">
+              <div id="logo"></div>
+              
+              <!-- Sales Village Buttons (hide for now 2011092x)
+		ul class="square-buttons">
+                  <li><a href="#" onclick="viewPDF('agenda.pdf','global');" ><img src="images/icons/agenda.png"><br/>Agenda</a></li>
+                  <li><a href="#" onclick="viewPDF('map.pdf','global');" ><img src="images/icons/pushpin-1.png"><br/>Map</a></li>
+                  <li><a href="#" onclick="viewPDF('QA_Generic.pdf','global');"><img src="images/icons/question.png"><br/>Questions</a></li>
+                  <li><a href="#" onclick="comingSoon();" ><img src="images/icons/comment.png"><br/>Responses</a></li>
+              </ul -->
+              <br clear="all"/>
+              <ul class="long-buttons">                                  
+                  <li><a href="#" onclick="viewSection('HOME');" ><label>Home</label></a></li>
+                  <li><a href="#" onclick="viewSection('HTML');" ><label>HTML/Images</label></a></li>
+                  <li><a href="#" onclick="viewSection('VIDEO');" ><label>Video Playback</label></a></li>
+                  <li><a href="#" onclick="viewSection('PDF');" ><label>PDF Reading</label></a></li>
+                  <li><a href="#" onclick="viewSection('AUDIO');" ><label>Audio</label></a></li>                  
+                  
+                  <div style="margin-left:20px;color:#fff;font-size:14px;margin-bottom:15px;">
+                      Select a PDF to view:
+                  <br/><select id="pdfList" style="font-size:17px;width:190px !important;"><!-- onchange="selectNewPDF()"  -->
+                  <!-- ul style="margin:0px;padding-left:10px;font-size:13px;padding-top:0px;margin-top:0px;" -->
+                      <script type="text/javascript">renderPDFList('partial');</script>
+                  <!-- /ul -->                  
+                  </select>
+                      </div>
+                  <li><a href="#" onclick="viewSection('GAME');" ><label>HTML/JS Games</label></a></li>
+               		  		
+              </ul>
+              <br clear="all"/>
+              <div class="footer-wrapper">
+                  <h1 style="color:#444;font-weight:normal;font-size:17px;">Sandbox: PhoneGap</h1>
+              </div>
+          </div>
+          
+          <div id="contentarea" class="group-wrapper">
+              <!-- <h2>PI Web App Demo</h2> -->
+              <div id="qa" style="display:none;">
+                  <h1>Q&A Documents</h1>
+                      <iframe src="html/QA.html" style="width:575px;height:900px;"></iframe>
+                      </div>
+              <div id="intro">
+                  <h1>Sandbox: PhoneGap</h1>
+                  <h3>This app is designed to be a template as well as a reference for building PhoneGap-based mobile apps.</h3>
+                  <hr/>
+		  <p>
+		    The items in the left menu reflect functionality currently available. Things next up to add:
+		    <b>
+		    <ul>
+		      <li>Audio demos</li>
+		      <li>Local Storage/Data</li>
+		      <li>Split-View template</li>
+		      <li>Best practice/speed tips</li>
+		      <li>PhoneGap/Native Plugin examples</li>
+		      <li>more...</li>
+		    </ul>
+		    </b>
+                  </p>
+	      </div>
+              <div id="html" style="display:none;">
+                  <h1>Standard HTML & Images</h1>
+                      <div>
+                      <h1 style="margin-bottom:4px;color:#333;font-size:41px;line-height:36px;font-weight:normal;text-align:center;
+                      font-family:Baskerville, Times New Roman, serif;">We build the people who<br/>build your success.</h1>
+                  <h4 style="margin-bottom:4px;color:#777;text-align:center;">We work for the best. Are you next?</h4>
+                  <p style="text-align:center;">
+                  <img src="images/graphics/doodle_td_hue.png" id="img_1" onclick="this.src='images/graphics/doodle_td.png';"/>
+                  <img src="images/graphics/doodle_sv_hue.png" id="img_2" onclick="this.src='images/graphics/doodle_sv.png';"/>
+                  <br/>
+                  <img src="images/graphics/doodle_al_hue.png" id="img_3"  onclick="this.src='images/graphics/doodle_al.png';"/>
+                  <img src="images/graphics/doodle_mps_hue.png" id="img_4"  onclick="this.src='images/graphics/doodle_mps.png';"/>		    
+                  </p>
+              </div>
+	      </div>
+	      <div id="video" style="display:none;">
+              <h1>Example Video</h1>
+              <video id="videoplayer" src="video/bruce-Desktop.m4v" width="640" height="480" controls></video>		
+              <hr/>
+              <span style="color:#fff;">Standard Video functionality (windowed and fullscreen)</span>
+	      </div>	      	      
+	      <div id="game" style="display:none;">
+              <h1>HTML/JavaScript Games</h1>
+              <hr/>
+              <iframe src="games/crossword/index.htm" style="width:600px;height:525px;"></iframe>
+	      </div>
+          
+	      <div id="pdf" style="display:none;">
+		<h1>PDF Reading!!</h1>
+		<hr/>
+		<ul>
+		    Select a PDF from the dropdown to the left to see an example PDF displayed in a controlled window. 		
+		</ul>
+	      </div>
+
+	      <div id="audio" style="display:none;">
+              <h1>Audio Tests</h1>
+              <hr/>
+              <div>
+                  <h3>Individual Sound FX</h3>
+                   <li><a href="#" onclick="playAudio('assets/audio/pinball_00.wav');">A</a></li>
+                   <li><a href="#" onclick="playAudio('assets/audio/pinball_01.wav');">B</a></li>             
+                   <li><a href="#" onclick="playAudio('assets/audio/pinball_02.wav');">C</a></li>                                    
+                  <h3>Multiple 4 Sound FX at Once</h3>
+                  <li><a href="#" onclick="test_playMultipleAudio();">D</a></li>                                    
+                  </hr>
+                  <h2 id="test_score">0</h2>
+            </div>
+
+	      </div>	      
+          
+      </div>    
+      </div>     
+      
+  </body>
+</html>
